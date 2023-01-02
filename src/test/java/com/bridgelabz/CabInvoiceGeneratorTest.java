@@ -20,10 +20,10 @@ public class CabInvoiceGeneratorTest {
         Assertions.assertEquals(5, fare);              // 10*0.2 + 1*2
     }
     @Test
-    public void givenMultipleRide_ShouldReturnTotalFare() {
-        Ride[] rides = {new Ride(2.0 , 5),
-                new Ride(5.0 , 10)};
-        double fare = cabInvoiceGenerator.calculateFare(rides);
-        Assertions.assertEquals(85, fare);
+    public void givenMultipleRides_ShouldReturnInvoiceSummary() {
+        Ride[] rides = {new Ride(5, 10), new Ride(3, 6), new Ride(6, 12)};
+        InvoiceSummary invoiceSummary = cabInvoiceGenerator.calculateFare(rides);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 168);
+        Assertions.assertEquals(expectedInvoiceSummary, invoiceSummary);
     }
 }
