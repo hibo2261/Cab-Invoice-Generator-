@@ -1,5 +1,7 @@
 package com.bridgelabz;
 
+
+import java.util.List;
 public class CabInvoiceGenerator {
     private static final int COST_PER_MINUTE = 1;   //    min cost per minute
     private static final double COST_PER_KILOMETER = 10;    //  min cost per kilometer
@@ -17,5 +19,13 @@ public class CabInvoiceGenerator {
             totalFare += this.calculateFare(ride.distance, ride.time);
         }
         return new InvoiceSummary(rides.length, totalFare);
+    }
+
+    public InvoiceSummary calculateFare(List<Ride> rideList) {
+        double totalFare = 0;
+        for (Ride ride : rideList) {
+            totalFare += this.calculateFare(ride.distance, ride.time);
+        }
+        return new InvoiceSummary(rideList.size(), totalFare);
     }
 }

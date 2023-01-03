@@ -3,6 +3,8 @@ package com.bridgelabz;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.List;
+
 public class CabInvoiceGeneratorTest {
     CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
     @Test
@@ -21,9 +23,11 @@ public class CabInvoiceGeneratorTest {
     }
     @Test
     public void givenMultipleRides_ShouldReturnInvoiceSummary() {
-        Ride[] rides = {new Ride(5, 10), new Ride(3, 6), new Ride(6, 12)};
+
+        RideRepository.userData();
+        List<Ride> rides = RideRepository.rideLists.get("user1");
         InvoiceSummary invoiceSummary = cabInvoiceGenerator.calculateFare(rides);
-        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 168);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(4, 336);
         Assertions.assertEquals(expectedInvoiceSummary, invoiceSummary);
     }
 }
