@@ -1,30 +1,49 @@
 package com.bridgelabz;
 
 
+import java.util.ArrayList;
 import java.util.List;
 public class CabInvoiceGenerator {
-    private static final int COST_PER_MINUTE = 1;   //    min cost per minute
-    private static final double COST_PER_KILOMETER = 10;    //  min cost per kilometer
-    private static final double MIN_FARE = 5;   //  min fare
-    public double calculateFare(double distance, double time) {
-
-        double totalFare = distance * COST_PER_KILOMETER + time * COST_PER_MINUTE;
-        return Math.max(totalFare, MIN_FARE);
-    }
-
-    public InvoiceSummary calculateFare(Ride[] rides) {
-
-        double totalFare = 0;
-        for (Ride ride : rides) {
-            totalFare += this.calculateFare(ride.distance, ride.time);
+    /*
+     *  variables to store costPerKilometer, costPerMinute, minFare
+     */
+    double costPerKilometer;
+    double costPerMinute;
+    double minFare;
+    /**
+     *  created calculateFare method to calculate fare for single ride
+     */
+    public double calculateFare(String rideType, double distance, double time) {
+        /*
+         *  check type of ride, use respective parameters to calculate fare
+         *  used Math.max to return minimum fare if it is less
+         */
+        if (rideType.equalsIgnoreCase("Premium")) {
+            costPerKilometer = 15;
+            costPerMinute = 2;
+            minFare = 20;
+        } else {
+            costPerKilometer = 10;
+            costPerMinute = 1;
+            minFare = 5;
         }
-        return new InvoiceSummary(rides.length, totalFare);
+        double fare = distance * costPerKilometer + time * costPerMinute;
+        return Math.max(fare, minFare);
     }
-
-    public InvoiceSummary calculateFare(List<Ride> rideList) {
+    /**
+     *  created calculateTotalFare method to calculate total fare for multiple rides
+     */
+    public InvoiceSummary calculateTotalFare(String userId) {
+        /*
+         *  calling UsersData.getData() to get stored data of rides of users
+         *  store data of user in rideList and used for loop to iterate it
+         *  and pass data to calculateFare method and calculate total fare
+         */
         double totalFare = 0;
+        UsersData.getData();
+        ArrayList<Ride> rideList = UsersData.rideLists.get(userId);
         for (Ride ride : rideList) {
-            totalFare += this.calculateFare(ride.distance, ride.time);
+            totalFare += this.calculateFare(ride.rideType, ride.distance, ride.time);
         }
         return new InvoiceSummary(rideList.size(), totalFare);
     }
